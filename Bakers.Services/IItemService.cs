@@ -1,0 +1,25 @@
+﻿using Bakers.Model;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bakers.Services
+{
+    public interface IItemService
+    {
+
+
+        List<Item> GetAllItem();
+
+        Item GetItem(int Id);
+
+        Item AddItem(Item item);
+
+
+        void DeleteItem(int Id);
+
+
+        Task<Item> EditItem(int Id, Item item);
+    }
+}
