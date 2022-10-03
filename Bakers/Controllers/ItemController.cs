@@ -3,6 +3,8 @@ using Bakers.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Bakers.Controllers
 {
@@ -61,7 +63,7 @@ namespace Bakers.Controllers
 
 
 
-
+        
         [HttpGet("{id:int}")]
         public IActionResult GetItem(int id)
         {
@@ -82,7 +84,34 @@ namespace Bakers.Controllers
 
             }
 
-        }
+
+
+        //[HttpGet("{id:int}")]
+        //public async ActionResult GetItem(int id)
+        //{
+        //    try
+        //    {
+        //         await _citem.Items
+        //            .Include(c => c.Category)
+        //            .Where(c => c.Id == Id)
+        //            .FirstorDefaultAsync();
+        //        ;
+
+        //        if (resultId == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return Ok(resultId);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError);
+
+        //    }
+
+       }
 
         [HttpDelete]
         [Route("delete/Id")]

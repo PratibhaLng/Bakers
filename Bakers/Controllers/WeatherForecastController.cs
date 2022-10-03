@@ -23,7 +23,16 @@ namespace Bakers.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+
+        //[HttpGet("{name}" )]
+
+    //  public string Get(string cityName)
+    //  {
+    //return cityName;
+    //   }
+
+
+[HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
@@ -35,5 +44,7 @@ namespace Bakers.Controllers
             })
             .ToArray();
         }
+
+
     }
 }

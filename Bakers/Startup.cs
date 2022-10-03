@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -26,6 +27,9 @@ namespace Bakers
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            //services.AddMvc(optipn => option.EnableEndpointRouting = false)
+            //    .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
+            //    .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddLamar(new ApplicationRegistry());
             services.AddDbContext<BakersDbcontext>(options => options.UseSqlServer(Configuration["database:connection"], b => b.MigrationsAssembly("Bakers.DB")));
             services.AddSwaggerGen();

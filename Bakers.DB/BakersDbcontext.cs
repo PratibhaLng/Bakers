@@ -13,6 +13,7 @@ namespace Bakers.DB
         public DbSet<Category> Category { get ; set ; }
         public DbSet<Customer> Customers { get ; set ; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
         public BakersDbcontext()
         {
 

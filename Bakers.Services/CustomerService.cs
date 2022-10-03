@@ -49,7 +49,7 @@ namespace Bakers.Services
             var _temp = GetCustomer(id);
             if (_temp != null)
             {
-                _temp.ContactName = customer.ContactName;
+                _temp.Name = customer.Name;
                 _temp.Address = customer.Address;
                 _temp.PhoneNo = customer.PhoneNo;
                 await _Context.SaveChangesAsync();

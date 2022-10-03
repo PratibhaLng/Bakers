@@ -56,7 +56,7 @@ namespace Bakers.Controllers
                 try
                 {
 
-                    string motif = @"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$";
+                    //string motif = @"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$";
                     if (customer.PhoneNo.Length == 10
                         //&& Regex.IsMatch(customer.PhoneNo, motif)
                         )

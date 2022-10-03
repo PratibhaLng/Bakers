@@ -11,6 +11,7 @@ namespace Bakers.DB.Interface
          DbSet<Category> Category { get; set; }
          DbSet<Customer> Customers { get; set; }
          DbSet<Item> Items { get; set; }
+        DbSet<OrderDetail> OrderDetail{ get; set; }
     }
 
 }

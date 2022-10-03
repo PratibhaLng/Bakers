@@ -13,10 +13,6 @@ namespace Bakers.Model
         
         public string ItemName { get; set; }
         
-        public string Quantity { get; set; }
-
-        
-
         public decimal Price { get; set; }
         public int? CategoryId { get; set; }
 

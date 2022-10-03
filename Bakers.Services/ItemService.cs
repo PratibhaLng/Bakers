@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Bakers.DB;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bakers.Services
 {
@@ -20,9 +21,10 @@ namespace Bakers.Services
                 _Context = Context;
             }
 
-            public Item AddItem(Item item)
+
+        public Item AddItem(Item item)
             {
-                //  category.Id = Id;
+                
                 _Context.Items.Add(item);
                 _Context.SaveChanges();
             
@@ -47,44 +49,85 @@ namespace Bakers.Services
 
             }
 
+        public async Task<Item> EditItem(int id, Item item)
+        {
 
-            public async Task<Item> EditItem(int Id, Item item)
+
+            var _temp = GetItem(id);
+            if (_temp != null)
             {
-
-
-                var _temp = GetItem(Id);
-                if (_temp != null)
-                {
-                    _temp.ItemName = item.ItemName;
-                    _temp.Quantity = item.Quantity;
-                    _temp.Price = item.Price;
-                    _temp.CategoryId = item.CategoryId;
-                    await _Context.SaveChangesAsync();
-                    return _temp;
-
-                }
-                return null;
+                _temp.ItemName = item.ItemName;
+                 _temp.Price= item.Price;
+                await _Context.SaveChangesAsync();
+                return _temp;
 
             }
-
-
-
-            public List<Item> GetAllItem()
-            {
-
-                var myitem = _Context.Items.ToList();
-                return myitem;
-            }
-
-
-
-            public Item GetItem(int Id)
-            {
-                return _Context.Items.FirstOrDefault(a => a.Id == Id);
-
-
-
-            }
+            return null;
 
         }
+        //public  Task<Item> EditItem(int Id, Item item)
+        //    {
+
+
+        //        var _temp = GetItem(Id);
+        //        if (_temp != null)
+        //        {
+        //            _temp.ItemName = item.ItemName;
+        //       //  _temp.Quantity = item.Quantity;
+        //            _temp.Price = item.Price;
+        //           // _temp.CategoryId = item.CategoryId;
+        //             _Context.SaveChanges();
+        //            return _temp;
+
+        //        }
+        //        return null;
+
+        //    }
+
+        public List<Item> GetAllItem()
+        {
+
+            var myitem = _Context.Items.Include(x => x.CategoryId).ToList();
+            return myitem;
+        }
+
+
+
+        public Item GetItem(int Id)
+        {
+            return _Context.Items.Include(a => a.CategoryId).FirstOrDefault(a => a.Id == Id);
+
+
+
+        }
+
+        //    public async Task<IActionResult> GetAllItem()
+        //{
+
+
+        //    {
+
+        //        var itemList= await _Context.Items
+        //        .Include(x=>x.CategoryId)
+        //        .ToListAsync();
+
+        //    }
+
+
+
+        //public async Task<ActionResult> GetItem(int Id)
+        //    {
+
+        //    var myitem = await _Context.Items
+        //        .Include(c => c.CategoryId)
+        //        .Where(c => c.Id == Id)
+        //        .FirstOrDefaultAsync();
+        //    return myitem;
+
+
+
+        //}
+
+
+    }
 }

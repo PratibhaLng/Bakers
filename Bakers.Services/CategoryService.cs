@@ -62,15 +62,11 @@ namespace Bakers.Services
 
         public List<Category> GetAllCategory()
         {
-            try
-            {
+            
                 var listCategory =  _Context.Category.ToList();
                 return listCategory;
-            }
-            catch(Exception )
-            {
-                return new List<Category>();
-            }
+            
+            
         }
 
         public Category GetCategory(int Id)
