@@ -13,7 +13,7 @@ namespace Bakers.Model
         public int Quantity { get; set; }
 
 
-        public decimal Cost { get; set; }
+        //public decimal Cost { get; set; }
 
        // public decimal SubAmount { get; set; }
 

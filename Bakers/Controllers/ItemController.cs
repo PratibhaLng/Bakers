@@ -1,4 +1,5 @@
 ﻿using Bakers.Model;
+using Bakers.Response;
 using Bakers.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,26 +46,38 @@ namespace Bakers.Controllers
             }
 
 
-        }
-        [HttpPost]
-        [Route("api/[controller]")]
-
-        public IActionResult AddItem(Item item)
-        {
-            _citem.AddItem(item);
-            return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Host + HttpContext.Request.Path + "/" + item.Id, item);
-
-
-
 
         }
-
-
-
-
-
         
-        [HttpGet("{id:int}")]
+            [HttpPost]
+            public async Task<IActionResult> AddItem(AddItem request)
+            {
+
+
+                Show response = new Show();
+
+                try
+                {
+
+                    response =   await _citem.AddItem(request);
+
+                }
+
+                catch (Exception ex)
+                {
+
+                    response.IsSuccess = false;
+                    response.Message = "Exception Occurs : " + ex.Message;
+
+                }
+                return Ok(response);
+
+            }
+
+
+
+
+            [HttpGet("{id:int}")]
         public IActionResult GetItem(int id)
         {
             try

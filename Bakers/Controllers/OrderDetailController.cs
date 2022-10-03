@@ -3,7 +3,9 @@ using Bakers.Response;
 using Bakers.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bakers.Controllers
@@ -49,7 +51,7 @@ namespace Bakers.Controllers
 
         }
 
-        [HttpGet("GetOrderDetails/{Id}")]
+
 
         [HttpGet]
         public async Task<IActionResult> OrderDetailById([FromQuery] int Id)
@@ -92,11 +94,23 @@ namespace Bakers.Controllers
         }
 
 
+        [HttpGet]
+        [Route("api/[controller]")]
+
+
+        public IActionResult GetAllOrder()
+        {
+
+
+
+            return Ok(_cOrder.GetAllOrder());
+
+
+
+
+
+        }
     }
-
-
-
-
 }
 
 

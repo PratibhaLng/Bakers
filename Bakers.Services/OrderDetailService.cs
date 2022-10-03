@@ -3,6 +3,7 @@ using Bakers.Model;
 using Bakers.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,8 @@ namespace Bakers.Services
                 response.Data = await _Context.OrderDetail
 
                           .Where(x => (x.Id == Id))
-                          .Include(a => a.CustomerId)
-                          .Include(a => a.ItemId)
+                          //.Include(a => a.CustomerId)
+                         //.Include(a =>a.ItemId)
                          .FirstOrDefaultAsync();
                 if (response.Data == null)
                 {
@@ -60,9 +61,21 @@ namespace Bakers.Services
 
             try
             {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.ItemId = request.ItemId;  
+                orderDetail.Quantity=request.Quantity;
+                orderDetail.CustomerId=request.CustomerId;
+
+                var item = await _Context.Items.Where(x => x.Id == request.ItemId).FirstOrDefaultAsync();
+
+                orderDetail.Cost = item.Price* orderDetail.Quantity;
+                             
+                
+               
                 response.IsSuccess = true;
                 response.Message = "Data Successfully Inserted";
-                
+                _Context.OrderDetail.Add(orderDetail);
+                    
                 await _Context.SaveChangesAsync();
 
 
@@ -114,14 +127,11 @@ namespace Bakers.Services
         }
 
 
-        public List<OrderDetail> GetAllOrder()
+        public  List<OrderDetail> GetAllOrder()
         {
 
-            var myorder = _Context.OrderDetail
-
-                          .Include(a => a.CustomerId)
-                          .Include(a => a.ItemId)
-                         .ToList();
+            var myorder =   _Context.OrderDetail.ToList();
+                          
             return myorder;
         }
 

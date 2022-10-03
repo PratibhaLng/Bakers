@@ -8,6 +8,7 @@ using Bakers.DB;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Bakers.Response;
 
 namespace Bakers.Services
 {
@@ -20,16 +21,36 @@ namespace Bakers.Services
             {
                 _Context = Context;
             }
+        public async Task<Show> AddItem(AddItem request)
+        {
+            Show response = new Show();
 
-
-        public Item AddItem(Item item)
+            try
             {
-                
-                _Context.Items.Add(item);
-                _Context.SaveChanges();
-            
-                return item;
+
+                Item item = new Item();
+                item.ItemName = request.ItemName;
+                item.Price = request.Price;
+                item.CategoryId = request.CategoryId;
+
+                response.IsSuccess = true;
+                response.Message = "Data Successfully Inserted";
+               _Context.Items.Add(item);
+                await _Context.SaveChangesAsync();
+
+
             }
+
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+
+            }
+            return response;
+        }
+
+       
 
 
             public void DeleteItem(int Id)
@@ -87,7 +108,7 @@ namespace Bakers.Services
         public List<Item> GetAllItem()
         {
 
-            var myitem = _Context.Items.Include(x => x.CategoryId).ToList();
+            var myitem = _Context.Items.ToList();
             return myitem;
         }
 
@@ -95,11 +116,13 @@ namespace Bakers.Services
 
         public Item GetItem(int Id)
         {
-            return _Context.Items.Include(a => a.CategoryId).FirstOrDefault(a => a.Id == Id);
+            return _Context.Items.FirstOrDefault(a => a.Id == Id);
 
 
 
         }
+
+       
 
         //    public async Task<IActionResult> GetAllItem()
         //{

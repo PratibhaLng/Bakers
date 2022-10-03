@@ -1,4 +1,5 @@
 ﻿using Bakers.Model;
+using Bakers.Response;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Bakers.Services
 
         Item GetItem(int Id);
 
-        Item AddItem(Item item);
+        public Task<Show> AddItem(AddItem request);
 
 
         void DeleteItem(int Id);
