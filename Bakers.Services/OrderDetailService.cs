@@ -92,7 +92,7 @@ namespace Bakers.Services
 
 
 
-                var result = await _Context.OrderDetail.Where(x => x.Id == Id).FirstOrDefaultAsync();
+                var result = await _Context.OrderDetail.Where(x => x.Id == request.Id).FirstOrDefaultAsync();
                 if (result != null)
 
 
