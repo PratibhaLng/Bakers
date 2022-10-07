@@ -1,8 +1,11 @@
 ﻿using Bakers.Model;
+using Bakers.Response;
 using Bakers.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Bakers.Controllers
 {
@@ -51,39 +54,38 @@ namespace Bakers.Controllers
             [HttpPost]
             [Route("api/[controller]")]
 
-            public IActionResult AddCustomer(Customer customer)
+
+        public async Task<IActionResult> AddCustomer(AddCustomer request)
+        {
+
+
+            Show response = new Show();
+
+            try
             {
-                try
-                {
 
-                    //string motif = @"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$";
-                    if (customer.PhoneNo.Length == 10
-                        //&& Regex.IsMatch(customer.PhoneNo, motif)
-                        )
-                    {
-                        _ccustomer.AddCustomer(customer);
-                        return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Host + HttpContext.Request.Path + "/" + customer.Id, customer);
-
-                    }
-                    return BadRequest();
-
-
-                }
-
-                catch (Exception)
-                {
-
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error in adding Customer in DataBase");
-                }
+                response = await _ccustomer.AddCustomer(request);
 
             }
 
+            catch (Exception ex)
+            {
+
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+
+            }
+            return Ok(response);
+
+        }
 
 
 
 
 
-            [HttpGet("{id:int}")]
+
+
+        [HttpGet("{id:int}")]
             public IActionResult GetCustomer(int id)
             {
                 try
@@ -93,8 +95,7 @@ namespace Bakers.Controllers
                     {
                         return NotFound();
                     }
-                    return Ok(resultId);
-
+                return Ok(resultId); 
                 }
                 catch (Exception)
                 {

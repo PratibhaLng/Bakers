@@ -5,19 +5,20 @@ using System.Text;
 
 namespace Bakers.Model
 {
-    public class OrderDetailShow
+    public class AddCustomer
     {
         [Required]
-        public int CustomerId { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
         [Required]
-        public int ItemId { get; set; }
+        public string Address { get; set; }
+
         [Required]
-        public int Quantity { get; set; }
+        [Phone]
+        public string PhoneNo { get; set; }
 
 
-        
+
 
     }
-  
-
 }

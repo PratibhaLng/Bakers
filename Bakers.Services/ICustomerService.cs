@@ -1,4 +1,5 @@
 ﻿using Bakers.Model;
+using Bakers.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,8 +14,7 @@ namespace Bakers.Services
 
         Customer GetCustomer(int Id);
 
-        Customer AddCustomer(Customer customer);
-
+        public Task<Show> AddCustomer(AddCustomer request);
 
         void DeleteCustomer(int Id);
 

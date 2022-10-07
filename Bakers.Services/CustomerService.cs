@@ -1,5 +1,6 @@
 ﻿using Bakers.DB;
 using Bakers.Model;
+using Bakers.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +16,33 @@ namespace Bakers.Services
         {
             _Context = Context;
         }
-        public Customer AddCustomer(Customer customer)
+        public async Task<Show> AddCustomer(AddCustomer request)
         {
+            Show response = new Show();
+
+            try
+            {
+
+                Customer customer = new Customer();
+                customer.Name = request.Name;
+                customer.Address = request.Address;
+                customer.PhoneNo = request.PhoneNo;
+                response.IsSuccess = true;
+                response.Message = "Data Successfully Inserted";
+                _Context.Customers.Add(customer);
+                await _Context.SaveChangesAsync();
 
 
-            _Context.Customers.Add(customer);
-            _Context.SaveChanges();
-            return customer;
+            }
 
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
 
-
-
+            }
+            return response;
         }
-
         public void DeleteCustomer(int Id)
         {
 

@@ -26,10 +26,24 @@ namespace Bakers
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            //services.AddMvc(optipn => option.EnableEndpointRouting = false)
-            //    .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
-            //    .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+            //.AddNewtonsoftJson();
+            .AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+
+
+           
+
+
+
+
+
+
+
+            services.AddMvc(options => { Console.Write(options); } );
+            
             services.AddLamar(new ApplicationRegistry());
             services.AddDbContext<BakersDbcontext>(options => options.UseSqlServer(Configuration["database:connection"], b => b.MigrationsAssembly("Bakers.DB")));
             services.AddSwaggerGen();

@@ -1,4 +1,5 @@
 ﻿using Bakers.Model;
+using Bakers.Response;
 //using Bakers.Response;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace Bakers.Services
 
         Category GetCategory(int Id);
 
-        Category AddCategory(Category category);
-
+        
+        public Task<Show> AddCategory(AddCategory request);
 
         void DeleteCategory(int Id);
 

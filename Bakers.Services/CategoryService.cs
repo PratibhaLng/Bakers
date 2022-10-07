@@ -1,5 +1,6 @@
 ﻿using Bakers.DB;
 using Bakers.Model;
+using Bakers.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,33 @@ namespace Bakers.Services
             _Context = Context;
         }
 
-        public Category AddCategory(Category category)
+       
+        public async Task<Show> AddCategory(AddCategory request)
         {
+            Show response = new Show();
 
-            _Context.Category.Add(category);
-            _Context.SaveChanges();
-            return category;
+            try
+            {
+
+                Category category = new Category();
+                category.Name = request.Name;
+                
+
+                response.IsSuccess = true;
+                response.Message = "Data Successfully Inserted";
+                _Context.Category.Add(category);
+                await _Context.SaveChangesAsync();
+
+
+            }
+
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+
+            }
+            return response;
         }
 
 

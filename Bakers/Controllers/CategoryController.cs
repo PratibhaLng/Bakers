@@ -1,9 +1,11 @@
 ﻿using Bakers.Model;
+using Bakers.Response;
 //using Bakers.Response;
 using Bakers.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace Bakers.Controllers
 {
@@ -49,22 +51,36 @@ namespace Bakers.Controllers
             [HttpPost]
             [Route("api/[controller]")]
 
-            public IActionResult AddCategory(Category category)
+        
+        public async Task<IActionResult> AddCategory(AddCategory request)
+        {
+
+
+            Show response = new Show();
+
+            try
             {
-                _categoryservice.AddCategory(category);
-                return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Host + HttpContext.Request.Path + "/" + category.Id, category);
 
-
-
+                response = await _categoryservice.AddCategory(request);
 
             }
 
+            catch (Exception ex)
+            {
+
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+
+            }
+            return Ok(response);
+
+        }
 
 
 
 
 
-            [HttpGet("{id:int}")]
+        [HttpGet("{id:int}")]
             public IActionResult GetCategory(int id)
             {
                 try

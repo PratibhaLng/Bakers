@@ -52,49 +52,51 @@ namespace Bakers.Controllers
         }
 
 
+        [Produces("application/json")]
+        //[HttpGet]
+        //public async Task<IActionResult> OrderDetailById(int Id)
+        //{
+        //    Show response = new Show();
+        //    try
+        //    {
+        //        response = await _cOrder.OrderDetailById(Id);
 
-        [HttpGet]
-        public async Task<IActionResult> OrderDetailById([FromQuery] int Id)
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        response.IsSuccess = false;
+        //        response.Message = "Exception Occurs : " + ex.Message;
+
+        //    }
+        //    return Ok(response);
+
+        //}
+
+        [HttpGet("{id:int}")]
+        public IActionResult GetOrderDetail(int id)
         {
-            OrderDetailById response = new OrderDetailById();
             try
             {
-                response = await _cOrder.OrderDetailById(Id);
+                var resultId = _cOrder.GetOrderDetail(id);
+                if (resultId == null)
+                {
+                    return NotFound();
+                }
+                return Ok(resultId);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
-                response.IsSuccess = false;
-                response.Message = "Exception Occurs : " + ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Retreiving Data from Database");
 
             }
-            return Ok(response);
 
         }
 
 
-
-        [HttpPut]
-        public async Task<IActionResult> OrderDetailUpdate(OrderDetailUpdate request)
-        {
-            Show response = new Show();
-            try
-            {
-                response = await _cOrder.OrderDetailUpdate(request);
-
-            }
-            catch (Exception ex)
-            {
-                response.IsSuccess = false;
-                response.Message = "Exception Occurs : " + ex.Message;
-
-            }
-            return Ok(response);
-        }
-
-
-        [HttpGet]
+            [HttpGet]
         [Route("api/[controller]")]
 
 
@@ -105,11 +107,47 @@ namespace Bakers.Controllers
 
             return Ok(_cOrder.GetAllOrder());
 
-
-
-
-
         }
+
+      
+
+
+
+        [HttpDelete]
+        [Route("delete/Id")]
+        public  async Task<IActionResult> DeleteOrderDetail(int Id)
+        {
+            Show response = new Show();
+            
+            try
+            {
+                //var removeItem =    _cOrder.GetOrderDetail(Id);
+                //if (removeItem == null)
+                //{
+
+
+
+                //    response.Message = "OrderNumber With Id:{Id}  was not found";
+                //}
+
+
+               
+                   response=await _cOrder.DeleteOrderDetail(Id);
+                
+                   return Ok(response);
+                
+            }
+            catch (Exception ex)
+            {
+
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+
+            }
+            return Ok(response);
+        }
+       
+
     }
 }
 
@@ -122,9 +160,5 @@ namespace Bakers.Controllers
 
 
 
-// public IActionResult Index()
-//{
-//  return View();
-//}
 
 
