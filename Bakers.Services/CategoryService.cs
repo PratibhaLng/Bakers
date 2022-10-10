@@ -77,7 +77,7 @@ namespace Bakers.Services
                 return _temp;
 
             }
-            return null;
+            throw new Exception("Category Id not found");
 
         }
 

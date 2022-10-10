@@ -48,36 +48,36 @@ namespace Bakers.Controllers
 
 
         }
-        
-            [HttpPost]
-            public async Task<IActionResult> AddItem(AddItem request)
+
+        [HttpPost]
+        public async Task<IActionResult> AddItem(AddItem request)
+        {
+
+
+            Show response = new Show();
+
+            try
             {
 
-
-                Show response = new Show();
-
-                try
-                {
-
-                    response =   await _citem.AddItem(request);
-
-                }
-
-                catch (Exception ex)
-                {
-
-                    response.IsSuccess = false;
-                    response.Message = "Exception Occurs : " + ex.Message;
-
-                }
-                return Ok(response);
+                response = await _citem.AddItem(request);
 
             }
 
+            catch (Exception ex)
+            {
+
+                response.IsSuccess = false;
+                response.Message = "Exception Occurs : " + ex.Message;
+
+            }
+            return Ok(response);
+
+        }
 
 
 
-            [HttpGet("{id:int}")]
+
+        [HttpGet("{id:int}")]
         public IActionResult GetItem(int id)
         {
             try
@@ -99,32 +99,8 @@ namespace Bakers.Controllers
 
 
 
-        //[HttpGet("{id:int}")]
-        //public async ActionResult GetItem(int id)
-        //{
-        //    try
-        //    {
-        //         await _citem.Items
-        //            .Include(c => c.Category)
-        //            .Where(c => c.Id == Id)
-        //            .FirstorDefaultAsync();
-        //        ;
-
-        //        if (resultId == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return Ok(resultId);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return StatusCode(StatusCodes.Status500InternalServerError);
-
-        //    }
-
-       }
+        }
+       
 
         [HttpDelete]
         [Route("delete/Id")]
@@ -132,20 +108,29 @@ namespace Bakers.Controllers
 
 
         {
-            var removeItem = _citem.GetItem(Id);
-            if (removeItem == null)
+            try
             {
+                var removeItem = _citem.GetItem(Id);
+                if (removeItem == null)
+                {
 
 
 
-                return NotFound($"Category With Id:{Id}  was not found");
+                    return NotFound($"Category With Id:{Id}  was not found");
+                }
+
+                {
+
+                    _citem.DeleteItem(Id);
+                    return Ok(removeItem);
+
+                }
             }
 
+            catch (Exception ee)
             {
 
-                _citem.DeleteItem(Id);
-                return Ok(removeItem);
-
+                return StatusCode(StatusCodes.Status500InternalServerError, ee);
             }
         }
 
@@ -158,13 +143,27 @@ namespace Bakers.Controllers
         public IActionResult EditItem(int Id, Item item)
 
         {
-            //var existingCategory = _ccategory.GetCategory(id);
-            // if (existingCategory != null)
-            //   category.Id = existingCategory.Id;
-            _citem.EditItem(Id, item);
-            return Ok(item);
-        }
 
-    
+            try
+            {
+
+                var existingItem = _citem.GetItem(Id);
+
+                if (existingItem != null)
+                {
+                    _citem.EditItem(Id, item);
+                    return Ok(item);
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, $"Item Id {Id} not found");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+
+
+            }
+        }
     }
 }

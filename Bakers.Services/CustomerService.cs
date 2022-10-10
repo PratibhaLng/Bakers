@@ -71,7 +71,7 @@ namespace Bakers.Services
                 return _temp;
 
             }
-            return null;
+            throw new Exception("Customer Id not found");
 
         }
 

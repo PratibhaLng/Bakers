@@ -83,27 +83,10 @@ namespace Bakers.Services
                 return _temp;
 
             }
-            return null;
+            throw new Exception("Item Id not found");
 
         }
-        //public  Task<Item> EditItem(int Id, Item item)
-        //    {
-
-
-        //        var _temp = GetItem(Id);
-        //        if (_temp != null)
-        //        {
-        //            _temp.ItemName = item.ItemName;
-        //       //  _temp.Quantity = item.Quantity;
-        //            _temp.Price = item.Price;
-        //           // _temp.CategoryId = item.CategoryId;
-        //             _Context.SaveChanges();
-        //            return _temp;
-
-        //        }
-        //        return null;
-
-        //    }
+        
 
         public List<Item> GetAllItem()
         {
@@ -121,35 +104,13 @@ namespace Bakers.Services
 
 
         }
+        
+
+
+
+
 
        
-
-        //    public async Task<IActionResult> GetAllItem()
-        //{
-
-
-        //    {
-
-        //        var itemList= await _Context.Items
-        //        .Include(x=>x.CategoryId)
-        //        .ToListAsync();
-
-        //    }
-
-
-
-        //public async Task<ActionResult> GetItem(int Id)
-        //    {
-
-        //    var myitem = await _Context.Items
-        //        .Include(c => c.CategoryId)
-        //        .Where(c => c.Id == Id)
-        //        .FirstOrDefaultAsync();
-        //    return myitem;
-
-
-
-        //}
 
 
     }

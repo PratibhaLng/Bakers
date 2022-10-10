@@ -9,49 +9,49 @@ using System.Threading.Tasks;
 
 namespace Bakers.Controllers
 {
-    
-    
 
-        [Route("api/[controller]")]
-        [ApiController]
-        public class CategoryController : ControllerBase
+
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CategoryController : ControllerBase
+    {
+
+        private readonly ICategoryService _categoryservice;
+
+        public CategoryController(ICategoryService ccategory)
         {
+            _categoryservice = ccategory;
 
-            private readonly ICategoryService _categoryservice;
 
-            public CategoryController(ICategoryService ccategory)
+        }
+
+
+
+        [HttpGet]
+        [Route("api/[controller]")]
+
+
+        public IActionResult GetAllCategory()
+        {
+            try
             {
-                _categoryservice = ccategory;
 
+                return Ok(_categoryservice.GetAllCategory());
+            }
+            catch (Exception ee)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ee);
 
             }
 
 
-
-            [HttpGet]
-            [Route("api/[controller]")]
-
-
-            public IActionResult GetAllCategory()
-            {
-                try
-                {
-
-                    return Ok(_categoryservice.GetAllCategory());
-                }
-                catch (Exception)
-                {
-
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error in Retreiving Data from Database");
-
-                }
+        }
+        [HttpPost]
+        [Route("api/[controller]")]
 
 
-            }
-            [HttpPost]
-            [Route("api/[controller]")]
-
-        
         public async Task<IActionResult> AddCategory(AddCategory request)
         {
 
@@ -81,32 +81,35 @@ namespace Bakers.Controllers
 
 
         [HttpGet("{id:int}")]
-            public IActionResult GetCategory(int id)
+        public IActionResult GetCategory(int id)
+        {
+            try
             {
-                try
+                var resultId = _categoryservice.GetCategory(id);
+                if (resultId == null)
                 {
-                    var resultId = _categoryservice.GetCategory(id);
-                    if (resultId == null)
-                    {
-                        return NotFound();
-                    }
-                    return Ok(resultId);
-
+                    return NotFound();
                 }
-                catch (Exception)
-                {
+                return Ok(resultId);
 
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error in Retreiving Data from Database");
+            }
+            catch (Exception ee)
+            {
 
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError, ee);
 
             }
 
-            [HttpDelete]
-            [Route("delete/Id")]
-            public IActionResult DeleteCategory(int Id)
+        }
+
+        [HttpDelete]
+        [Route("delete/Id")]
+        public IActionResult DeleteCategory(int Id)
 
 
+        {
+
+            try
             {
                 var removeCategory = _categoryservice.GetCategory(Id);
                 if (removeCategory == null)
@@ -125,21 +128,45 @@ namespace Bakers.Controllers
                 }
             }
 
-
-
-
-
-            [HttpPut]
-            [Route("Edit/Id")]
-            public ActionResult  EditCategory(int Id, Category category)
-
+            catch (Exception ee)
             {
-                //var existingCategory = _ccategory.GetCategory(id);
-                // if (existingCategory != null)
-                //   category.Id = existingCategory.Id;
-                _categoryservice.EditCategory(Id, category);
-                return Ok(category);
+                return StatusCode(StatusCodes.Status500InternalServerError, ee);
+
+
             }
+        }
+
+
+
+
+
+        [HttpPut]
+        [Route("Edit/Id")]
+        public ActionResult EditCategory(int Id, Category category)
+             {
+
+            try
+            {
+                var existingCategory = _categoryservice.GetCategory(Id);
+                
+                  if (existingCategory != null)
+                {
+                     _categoryservice.EditCategory(Id,category);
+                    return Ok(category);
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, $"Category Id {Id} not found");
+
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+
+
+            }
+
+
+        }
 
             // public IActionResult Index()
             //{

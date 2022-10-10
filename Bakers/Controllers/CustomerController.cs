@@ -9,50 +9,50 @@ using System.Threading.Tasks;
 
 namespace Bakers.Controllers
 {
-    
 
-        [Route("api/[controller]")]
-        [ApiController]
-        public class CustomerController : ControllerBase
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CustomerController : ControllerBase
+    {
+
+
+
+
+
+        private readonly ICustomerService _ccustomer;
+
+        public CustomerController(ICustomerService ccustomer)
         {
+            _ccustomer = ccustomer;
+
+
+        }
 
 
 
+        [HttpGet]
+        [Route("api/[controller]")]
 
 
-            private readonly ICustomerService _ccustomer;
-
-            public CustomerController(ICustomerService ccustomer)
+        public IActionResult GetAllCustomer()
+        {
+            try
             {
-                _ccustomer = ccustomer;
 
+                return Ok(_ccustomer.GetAllCustomer());
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Retreiving Data from Database");
 
             }
 
 
-
-            [HttpGet]
-            [Route("api/[controller]")]
-
-
-            public IActionResult GetAllCustomer()
-            {
-                try
-                {
-
-                    return Ok(_ccustomer.GetAllCustomer());
-                }
-                catch (Exception)
-                {
-
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error in Retreiving Data from Database");
-
-                }
-
-
-            }
-            [HttpPost]
-            [Route("api/[controller]")]
+        }
+        [HttpPost]
+        [Route("api/[controller]")]
 
 
         public async Task<IActionResult> AddCustomer(AddCustomer request)
@@ -86,29 +86,31 @@ namespace Bakers.Controllers
 
 
         [HttpGet("{id:int}")]
-            public IActionResult GetCustomer(int id)
+        public IActionResult GetCustomer(int id)
+        {
+            try
             {
-                try
+                var resultId = _ccustomer.GetCustomer(id);
+                if (resultId == null)
                 {
-                    var resultId = _ccustomer.GetCustomer(id);
-                    if (resultId == null)
-                    {
-                        return NotFound();
-                    }
-                return Ok(resultId); 
+                    return NotFound();
                 }
-                catch (Exception)
-                {
+                return Ok(resultId);
+            }
+            catch (Exception ee)
+            {
 
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error in Retreiving Data from Database");
-
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError, ee);
 
             }
 
-            [HttpDelete]
-            [Route("delete/Id")]
-            public IActionResult DeleteCustomer(int Id)
+        }
+
+        [HttpDelete]
+        [Route("delete/Id")]
+        public IActionResult DeleteCustomer(int Id)
+        {
+            try
 
 
             {
@@ -128,29 +130,46 @@ namespace Bakers.Controllers
 
                 }
             }
-
-
-
-
-
-            [HttpPut]
-            [Route("Edit/Id")]
-            public IActionResult EditCustomer(int id, Customer customer)
-
+            catch (Exception ex)
             {
-                // var existingCustomer = _ccustomer.GetCustomer(id);
-                // if (existingCustomer != null)
-                //   customer.Id = existingCustomer.Id;
-                _ccustomer.EditCustomer(id, customer);
-                return Ok(customer);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+
+        }
+
+
+        [HttpPut]
+        [Route("Edit/Id")]
+        public IActionResult EditCustomer(int id, Customer customer)
+
+        {
+
+
+            try
+            {
+                var existingCustomer = _ccustomer.GetCustomer(id);
+
+                if (existingCustomer != null)
+                {
+                    _ccustomer.EditCustomer(id, customer);
+                    return Ok(customer);
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, $"Customer Id {id} not found");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+
+
             }
 
 
+        }
 
 
-            //public IActionResult Index()
-            //{
-            //  return View();
-            //}
+
         }
 }

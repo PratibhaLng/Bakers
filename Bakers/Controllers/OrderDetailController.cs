@@ -103,13 +103,22 @@ namespace Bakers.Controllers
         public IActionResult GetAllOrder()
         {
 
+            try
+            {
 
+                return Ok(_cOrder.GetAllOrder());
+            }
 
-            return Ok(_cOrder.GetAllOrder());
+            catch (Exception ee)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,ee);
+
+            }
 
         }
 
-      
+
 
 
 
@@ -121,15 +130,7 @@ namespace Bakers.Controllers
             
             try
             {
-                //var removeItem =    _cOrder.GetOrderDetail(Id);
-                //if (removeItem == null)
-                //{
-
-
-
-                //    response.Message = "OrderNumber With Id:{Id}  was not found";
-                //}
-
+                
 
                
                    response=await _cOrder.DeleteOrderDetail(Id);
